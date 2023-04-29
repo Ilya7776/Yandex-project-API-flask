@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<meta charset="UTF-8">
+
+<h2 align="center">Список книг</h2>
+{% if current_user.is_authenticated %}
+<a href="addbook" class="btn btn-secondary">Добавить книгу</a>
+{% endif %}
+{% for book in books %}
+<h3>{{ book.name }}</h3>
+<div class="table_container">
+    <table class="my_table">
+        <tr class="my_row">
+            <td class="title" width="400px" bgcolor="#dddddd">Название</td>
+            <td class="title" width="150px" bgcolor="#dddddd">Автор</td>
+            <td class="title" width="100px" bgcolor="#dddddd" align="center">Жанр</td>
+            <td class="title" width="200px" bgcolor="#dddddd" align="center">Цена</td>
+            <td class="title" width="100px" bgcolor="#dddddd" align="center">Наличие</td>
+        </tr>
+        <tr class="my_row">
+            <td class="ordinary" bgcolor="#eeeeff">{{ book.name }}</td>
+            <td class="ordinary" bgcolor="#eeeeff">{{ book.author }}</td>
+            <td class="ordinary" bgcolor="#eeeeff" align="center">{{ book.genre }}</td>
+            <td class="ordinary" bgcolor="#eeeeff" align="center">{{ book.price }} рублей</td>
+            {% if book.bought %}
+            <td class="ordinary" bgcolor="#eeffee" align="center">Есть в наличии</td>
+            {% else %}
+            <td class="ordinary" bgcolor="#ffeeff" align="center">Нет в наличии</td>
+            {% endif %}
+        </tr>
+
+    </table>
+</div>
+<br>
+{% if current_user.is_authenticated and current_user.id == books.author or current_user.id == 1  %}
+<div>
+    <a href="/books/{{ books.id }}" class="btn btn-warning">Редактировать книгу</a>
+    <a href="/books_delete/{{ books.id }}" class="btn btn-danger">Удалить книгу</a>
+</div>
+{% endif %}
+{% endfor %}
+
+{% endblock %}
